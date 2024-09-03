@@ -691,10 +691,6 @@ SHAPE
   top: 90vh;
   left: 88vw;
 }
-.dark-theme .shape--8,
-.dark-theme .shape--2 {
-  /* filter: invert(1); */
-}
 
 /*
 
