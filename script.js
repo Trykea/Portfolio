@@ -68,3 +68,49 @@ function moveBackground(event) {
     shapes[i].style.transform = ` `;
   }
 }
+document.addEventListener("DOMContentLoaded", function () {
+  // Smooth scroll function
+  function smoothScroll(target, duration = 800) {
+    const targetPosition = target.getBoundingClientRect().top;
+    const startPosition = window.pageYOffset;
+    const distance = targetPosition - 100; // Adjust for header if needed
+    let startTime = null;
+
+    function animation(currentTime) {
+      if (startTime === null) startTime = currentTime;
+      const timeElapsed = currentTime - startTime;
+      const run = ease(timeElapsed, startPosition, distance, duration);
+      window.scrollTo(0, run);
+      if (timeElapsed < duration) requestAnimationFrame(animation);
+    }
+
+    // Easing function
+    function ease(t, b, c, d) {
+      t /= d / 2;
+      if (t < 1) return (c / 2) * t * t + b;
+      t--;
+      return (-c / 2) * (t * (t - 2) - 1) + b;
+    }
+
+    requestAnimationFrame(animation);
+  }
+
+  // Add click event to all anchor links
+  document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+    anchor.addEventListener("click", function (e) {
+      const href = this.getAttribute("href");
+
+      // If href is just "#" or doesn't point to an element, let default behavior handle it
+      if (href === "#" || !document.querySelector(href)) {
+        return;
+      }
+
+      // Prevent default only for valid smooth scrolling targets
+      e.preventDefault();
+      const target = document.querySelector(href);
+      if (target) {
+        smoothScroll(target);
+      }
+    });
+  });
+});
